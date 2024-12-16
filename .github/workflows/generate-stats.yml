@@ -22,10 +22,12 @@ jobs:
 
       - name: Commit and push changes
         env:
-          GH_STATS_TOKEN: ${{ secrets.GH_STATS_TOKEN }}
+          GH_STATS_TOKEN: ${{ secrets.GH_STATS_TOKEN }} # Usa il secret del token
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git add stats.svg
           git commit -m "Aggiorna statistiche GitHub" || echo "Nessuna modifica da committare"
-          git push https://x-access-token:${GH_STATS_PAT}@github.com/emanueletocci/github-stats.git main
+          
+          # Esegui il push con il token
+          git push https://x-access-token:${GH_STATS_TOKEN}@github.com/emanueletocci/github-stats.git main
