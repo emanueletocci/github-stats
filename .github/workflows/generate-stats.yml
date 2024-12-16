@@ -13,20 +13,19 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Clone GitHub Readme Stats
-        run: |
-          git clone https://github.com/anuraghazra/github-readme-stats.git
-          cd github-readme-stats
+        with:
+          persist-credentials: true # Garantisce l'autenticazione per il push
 
       - name: Generate stats image
         run: |
           curl -o stats.svg "https://github-readme-stats.vercel.app/api?username=emanueletocci&show_icons=true&count_private=true"
 
       - name: Commit and push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_STATS_TOKEN }}
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git add stats.svg
           git commit -m "Aggiorna statistiche GitHub" || echo "Nessuna modifica da committare"
-          git push
+          git push https://${GITHUB_TOKEN}@github.com/emanueletocci/github-stats.git main
