@@ -24,8 +24,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_STATS_TOKEN }}
         run: |
-          git config --global user.name 'github-actions'
-          git config --global user.email 'github-actions@github.com'
+          git config --global user.name 'emanueletocci'
+          git config --global user.email 'tocciemanuele03@gmail.com'
           git add stats.svg
           git commit -m "Aggiorna statistiche GitHub" || echo "Nessuna modifica da committare"
           git push https://x-access-token:${GITHUB_TOKEN}@github.com/emanueletocci/github-stats.git main
