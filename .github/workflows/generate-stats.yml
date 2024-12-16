@@ -17,17 +17,17 @@ jobs:
           persist-credentials: false # Disabilita il GITHUB_TOKEN predefinito
 
       - name: Generate stats image
+        env:
+          GH_STATS_TOKEN: ${{ secrets.GH_STATS_TOKEN }}  # Usa il secret del token
         run: |
-          curl -o stats.svg "https://github-readme-stats.vercel.app/api?username=emanueletocci&show_icons=true&count_private=true"
+          curl -o stats.svg "https://github-readme-stats.vercel.app/api?username=emanueletocci&show_icons=true&count_private=true&include_all_commits=true&hide=prs&hide_title=true"
 
       - name: Commit and push changes
         env:
-          GH_STATS_TOKEN: ${{ secrets.GH_STATS_TOKEN }} # Usa il secret del token
+          GH_STATS_TOKEN: ${{ secrets.GH_STATS_TOKEN }}
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git add stats.svg
           git commit -m "Aggiorna statistiche GitHub" || echo "Nessuna modifica da committare"
-          
-          # Esegui il push con il token
           git push https://x-access-token:${GH_STATS_TOKEN}@github.com/emanueletocci/github-stats.git main
