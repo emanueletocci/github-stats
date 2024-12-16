@@ -29,3 +29,4 @@ jobs:
           git add stats.svg
           git commit -m "Aggiorna statistiche GitHub" || echo "Nessuna modifica da committare"
           git push https://x-access-token:${GITHUB_TOKEN}@github.com/emanueletocci/github-stats.git main
+
