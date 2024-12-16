@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '0 0 * * *' # Esegue il workflow ogni giorno a mezzanotte
+    - cron: '0 0 * * *' # Ogni giorno a mezzanotte
 
 jobs:
   update-stats:
@@ -14,18 +14,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Generate GitHub stats
-        uses: anuraghazra/github-readme-stats@v1
-        with:
-          token: ${{ secrets.GH_STATS_TOKEN }}
-          username: emanueletocci
-          count_private: true
-          output_dir: stats
+      - name: Clone GitHub Readme Stats
+        run: |
+          git clone https://github.com/anuraghazra/github-readme-stats.git
+          cd github-readme-stats
+
+      - name: Generate stats image
+        run: |
+          curl -o stats.svg "https://github-readme-stats.vercel.app/api?username=emanueletocci&show_icons=true&count_private=true"
 
       - name: Commit and push changes
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
-          git add stats/*
+          git add stats.svg
           git commit -m "Aggiorna statistiche GitHub" || echo "Nessuna modifica da committare"
           git push
